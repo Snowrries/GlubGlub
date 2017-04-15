@@ -1,5 +1,8 @@
 package tyme.glubglub;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -9,10 +12,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Date;
+
+import static android.R.attr.fragment;
 
 public class map extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    public Activity thisActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +48,26 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        thisActivity = this;
+        // Add a marker on the Raritan
+        //40.508060, -74.455448
+        LatLng raritan = new LatLng(40.508060, -74.455448);
+        mMap.addMarker(new MarkerOptions().position(raritan).title("Raritan River"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(raritan, 15));
+        mMap.setOnMapClickListener(
+                new OnMapClickListener(){
+                    @Override
+                    public void onMapClick(LatLng latLng) {
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                        dialogue promp = new dialogue();
+                        Bundle bundle = new Bundle();
+                        bundle.putDouble("lat", latLng.latitude);
+                        bundle.putDouble("lon", latLng.longitude);
+                        promp.setArguments(bundle);
+                        promp.show(getFragmentManager(), "AlertDialogFragment");
+                    }
+                }
+        );
     }
+
 }
