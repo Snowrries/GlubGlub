@@ -11,6 +11,9 @@ public class userPoint {
     public double Lng;
     public int Sev;
 
+    public userPoint() {
+
+    }
     public userPoint(Date time, double lat, double lng, int sev){
         Time = time;
         Lat = lat;
