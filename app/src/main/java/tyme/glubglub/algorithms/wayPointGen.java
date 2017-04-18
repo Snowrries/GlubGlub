@@ -15,23 +15,23 @@ public class wayPointGen{
 		//this.short_width = short_width;
 	}
 	private int[] genX(int short_width){
-		int size = this.size_x/short_width * 2 + 1;
+		int size = size_x/short_width * 2 + 1;
 		int[] wayPointx = new int[size];
 		int multiplier = 1;
-		wayPointx[0] = 0;
+		wayPointx[0] = size_x - 1;
 		for(int i = 1; i < size; i+=2){
-			wayPointx[i] = short_width * multiplier - 1;
+			wayPointx[i] = size_x - short_width * multiplier;
 			if(i+1 >= size){
 				break;
 			}
-			wayPointx[i+1] = short_width * multiplier - 1;
+			wayPointx[i+1] = size_x - short_width * multiplier;
 			multiplier++;
 		}
 		return wayPointx;
 	}
 	
 	private int[] genY(int short_width){
-		int size = this.size_y/short_width * 2 + 1;
+		int size = size_y/short_width * 2 + 1;
 		int[] wayPointy = new int[size];
 		int high = this.size_y - 1;
 		int count = 0;
