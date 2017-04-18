@@ -3,18 +3,19 @@ package tyme.glubglub.algorithms;
 import android.graphics.Point;
 import android.graphics.PointF;
 
+import com.google.android.gms.maps.model.LatLng;
 
 public class AUV{
 	
-	PointF currentLatLong;
+	LatLng currentLatLong;
 	Point currentPos;
 	double ratio; //Degree to cell size
 	double scale; //Generally 10^6
-	float startLong;
-	float startLat;
+	double startLong;
+	double startLat;
 	
-	public AUV(float latitude, float longitude, double ratio, double scale){
-		this.currentLatLong = new PointF(latitude,longitude);
+	public AUV(double latitude, double longitude, double ratio, double scale){
+		this.currentLatLong = new LatLng(latitude,longitude);
 		this.currentPos = new Point(0,0);
 		this.ratio = ratio;
 		this.scale = scale;
@@ -25,7 +26,9 @@ public class AUV{
 	public void setX(int x){
 		if(x >= 0){
 			this.currentPos.set(x,this.currentPos.y);
-			this.currentLatLong.set((float) (this.startLat + x/ratio * scale),this.currentLatLong.y);
+			this.currentLatLong.latitude = (double) this.startLat + x/ratio * scale;
+			this.currentLatLong.longitude = (double) this.currentLatLong.y;
+			
 		}
 		
 	}
@@ -37,7 +40,8 @@ public class AUV{
 	public void setY(int y){
 		if(y >= 0){
 			this.currentPos.set(this.currentPos.x,y);
-			this.currentLatLong.set(this.currentLatLong.x, (float) (this.startLong + y/ratio * scale));
+			this.currentLatLong.latitude = (double) this.currentLatLong.x;
+			this.currentLatLong.longitude = (double) this.startLong + y/ratio * scale;
 		}
 		
 	}
