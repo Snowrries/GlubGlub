@@ -40,6 +40,9 @@ public class connect extends FragmentActivity implements OnMapReadyCallback, con
 	mainLoop mission;
 	Marker originMarker;
 	final double ratio = 5.4896944; //*10^-6
+	ChildEventListener userListener;
+
+	FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +101,8 @@ public class connect extends FragmentActivity implements OnMapReadyCallback, con
 				.add(
 						new LatLng(x, y),
 						new LatLng(x, y+addLong),
-						new LatLng(x-addLat, y+addLong),
-						new LatLng(x-addLat, y),
+						new LatLng(x+addLat, y+addLong),
+						new LatLng(x+addLat, y),
 						new LatLng(x, y)));
 
 		// pathname - file of our simulated world
@@ -130,8 +133,8 @@ public class connect extends FragmentActivity implements OnMapReadyCallback, con
 						.add(
 								new LatLng(x, y),
 								new LatLng(x, y+addLong),
-								new LatLng(x-addLat, y+addLong),
-								new LatLng(x-addLat, y),
+								new LatLng(x+addLat, y+addLong),
+								new LatLng(x+addLat, y),
 								new LatLng(x, y)));
 			}
 
@@ -162,17 +165,20 @@ public class connect extends FragmentActivity implements OnMapReadyCallback, con
 		);
 		//Create a listener for changes to the firebase
 		//Place the listener at the CurrentUser level
-		FirebaseDatabase database = FirebaseDatabase.getInstance();
-		ChildEventListener userListener = new ChildEventListener() {
+		userListener = new ChildEventListener() {
 			@Override
 			public void onChildAdded(DataSnapshot dataSnapshot, String prev) {
 				// Get userPoint object and use the values to update the UI
 				userPoint up = dataSnapshot.getValue(userPoint.class);
+				if(mission != null)
+					mission.update(up);
 			}
 
 			@Override
 			public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 				userPoint up = dataSnapshot.getValue(userPoint.class);
+				if(mission != null)
+					mission.update(up);
 			}
 
 			@Override
@@ -197,6 +203,10 @@ public class connect extends FragmentActivity implements OnMapReadyCallback, con
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog) {
+		FirebaseDatabase db = FirebaseDatabase.getInstance();
+		db.getReference("Waypoints").removeValue();
+		db.getReference("Current").removeValue();
+		db.getReference("CurrentUser").removeValue();
 		originMarker.setDraggable(false);
 		float startLatitude = (float) originMarker.getPosition().latitude;
 		float startLongitude = (float) originMarker.getPosition().longitude;
@@ -205,8 +215,8 @@ public class connect extends FragmentActivity implements OnMapReadyCallback, con
 		mission = new mainLoop(pathname, startLatitude, startLongitude, ratio, 1000000, 100, 100,5,80, getApplicationContext());
 		Timer timer = new Timer();
 		TimerTask simulate = new TimerTask() {
-			public HashMap<String, PointF> toMap(List<PointF> currentList) {
-			HashMap<String, PointF> result = new HashMap<>();
+			public HashMap<String, LatLng> toMap(List<LatLng> currentList) {
+			HashMap<String, LatLng> result = new HashMap<>();
 			for(int i = 0; i < currentList.size(); i++){
 				result.put(Integer.toString(i), currentList.get(i));
 			}
@@ -215,7 +225,7 @@ public class connect extends FragmentActivity implements OnMapReadyCallback, con
 			@Override
 			public void run() {
 				FirebaseDatabase database = FirebaseDatabase.getInstance();
-				List<PointF> currentList = mission.getEstimatedPath();
+				List<LatLng> currentList = mission.getEstimatedPath();
 				DatabaseReference myPts = database.getReference("Waypoints");
 				myPts.setValue(toMap(currentList));
 				if(mission.isFinished())
@@ -240,5 +250,11 @@ public class connect extends FragmentActivity implements OnMapReadyCallback, con
 
 	@Override
 	public void onDialogNegativeClick(DialogFragment dialog) {
+	}
+	@Override
+	protected void onStop() {
+		super.onStop();
+
+		database.getReference().child("CurrentUser").removeEventListener(userListener);
 	}
 }

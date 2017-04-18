@@ -10,6 +10,8 @@ public class dataPoint {
     public double Lng;
     public double Temp;
 
+    public dataPoint(){}
+
     public dataPoint(Date time, double lat, double lng, double temp){
         Time = time;
         Lat = lat;

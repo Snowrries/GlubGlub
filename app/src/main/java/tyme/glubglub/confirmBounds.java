@@ -63,7 +63,7 @@ public class confirmBounds extends DialogFragment {
 		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				mListener.onDialogPositiveClick(confirmBounds.this);
+				mListener.onDialogNegativeClick(confirmBounds.this);
 			}});
 		return builder.create();
 	}

@@ -8,11 +8,19 @@ import com.google.maps.android.clustering.ClusterItem;
  */
 
 public class userCluster implements ClusterItem {
-    private final LatLng mPosition;
+    private LatLng mPosition;
     private String mTitle;
     private String mSnippet;
+	double latitude;
+	double longitude;
+
+    public userCluster(){
+
+	}
 
     public userCluster(double lat, double lng) {
+		latitude = lat;
+		longitude = lng;
         mPosition = new LatLng(lat, lng);
     }
 
