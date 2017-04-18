@@ -103,7 +103,7 @@ public class mainLoop{
 		wayPoints = wpGenerator.sparseWayPointGen(step_size);
 		worldOrder = new World(size_x,size_y);
 		simWorld = new double[size_x][size_y];
-		
+		blueRov.setX(size_x - 1);
 		
 		try {
 			simWorld = txtRead.readFile(context, size_x, size_y);
@@ -175,6 +175,7 @@ public class mainLoop{
 	public List<LatLng> getEstimatedPath(){
 		//Covert from cells to gps coor.
 		List<LatLng> result = new ArrayList<LatLng>();
+		result.add(newLatLng(BlueRov.getLat(),BlueRov.getLong()));
 		for (Point p : wayPoints){
 			result.add(new LatLng((p.x * ratio / scale + this.startLat) ,(p.y* ratio / scale + this.startLong)));
 		}
