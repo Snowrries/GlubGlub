@@ -50,6 +50,10 @@ public class Main extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void switchToConnect(View view){
+        Intent intent = new Intent(this, connect.class);
+        startActivity(intent);
+    }
     /**
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.

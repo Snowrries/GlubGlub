@@ -1,8 +1,6 @@
 package tyme.glubglub;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,14 +15,9 @@ import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.clustering.ClusterManager;
 
-import java.util.Date;
-
-import static android.R.attr.fragment;
 
 public class map extends FragmentActivity implements OnMapReadyCallback {
 
@@ -70,7 +63,6 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
                 new OnMapClickListener(){
                     @Override
                     public void onMapClick(LatLng latLng) {
-
                         dialogue promp = new dialogue();
                         Bundle bundle = new Bundle();
                         bundle.putDouble("lat", latLng.latitude);
@@ -116,6 +108,11 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         };
         database.getReference().child("CurrentUser").addChildEventListener(userListener);
 
+        //Create another listener for updates to the firebase in real data
+        //Update a heatmap with this data in real time.
+
+		//Create another listener for updates to the GPS waypoints
+		//Update a polyline path with this data in real time.
 
 
 
