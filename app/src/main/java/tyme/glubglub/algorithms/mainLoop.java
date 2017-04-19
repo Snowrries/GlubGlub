@@ -175,7 +175,7 @@ public class mainLoop{
 	public List<LatLng> getEstimatedPath(){
 		//Covert from cells to gps coor.
 		List<LatLng> result = new ArrayList<LatLng>();
-		result.add(newLatLng(BlueRov.getLat(),BlueRov.getLong()));
+		result.add(new LatLng(blueRov.getLat(),blueRov.getLong()));
 		for (Point p : wayPoints){
 			result.add(new LatLng((p.x * ratio / scale + this.startLat) ,(p.y* ratio / scale + this.startLong)));
 		}
