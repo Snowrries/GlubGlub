@@ -26,8 +26,7 @@ public class AUV{
 	public void setX(int x){
 		if(x >= 0){
 			this.currentPos.set(x,this.currentPos.y);
-			this.currentLatLong = new LatLng((double) this.startLat + x/ratio * scale, (double) this.currentLatLong.longitude);
-			
+			this.currentLatLong = new LatLng( this.startLat + x*ratio / scale, this.currentLatLong.longitude);
 		}
 		
 	}
@@ -39,7 +38,7 @@ public class AUV{
 	public void setY(int y){
 		if(y >= 0){
 			this.currentPos.set(this.currentPos.x,y);
-			this.currentLatLong = new LatLng(this.currentLatLong.latitude, this.startLong + y/ratio*scale);
+			this.currentLatLong = new LatLng(this.currentLatLong.latitude, this.startLong + y*ratio/scale);
 		}
 		
 	}

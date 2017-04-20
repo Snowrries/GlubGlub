@@ -104,6 +104,7 @@ public class mainLoop{
 		worldOrder = new World(size_x,size_y);
 		simWorld = new double[size_x][size_y];
 		blueRov.setX(size_x - 1);
+		//blueRov.setY(0);
 		
 		try {
 			simWorld = txtRead.readFile(context, size_x, size_y);
