@@ -170,10 +170,11 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 			@Override
 			public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 				dataPoint dt = dataSnapshot.getValue(dataPoint.class);
-				WeightedLatLng addme = new WeightedLatLng(new LatLng(dt.Lat,dt.Lng),dt.Temp);
+				WeightedLatLng addme = new WeightedLatLng(new LatLng(dt.Lat,dt.Lng),dt.Temp/80);
 				data.add(addme);
-				mProvider.setOpacity(.7);
+				mProvider.setOpacity(.5);
 				mProvider.setWeightedData(data);
+				mProvider.setRadius(10);
 				mOverlay.clearTileCache();
 			}
 

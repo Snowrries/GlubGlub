@@ -245,7 +245,7 @@ public class connect extends FragmentActivity implements OnMapReadyCallback, con
 				}
 			}
 		};
-		timer.schedule(simulate, 0, 5000);
+		timer.schedule(simulate, 0, 1000);
 	}
 
 	@Override
